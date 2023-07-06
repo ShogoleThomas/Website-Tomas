@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Quiz</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+    }
+    h1 {
+      text-align: center;
+    }
+    #quiz {
+      margin-bottom: 20px;
+    }
+    #result {
+      display: none;
+    }
+    .question {
+      margin-bottom: 10px;
+    }
+    .submit-btn {
+      display: block;
+      margin-top: 20px;
+    }
+    .center {
+      display: flex;
+      justify-content: center;
+    }
+    .button-container {
+      margin: 10px;
+    }
+    #timer {
+      text-align: center;
+      font-size: 24px;
+      margin-bottom: 20px;
+    }
+  </style>
+</head>
+<body  background = "Sports Three.jpg">
+  <h1><u>WHAT WAS THE MOST MEMORABLE SPORTING MOMENT YOU'VE WITNESSED?</u></h1>
+  <h2><center><u>STAND-UP TO THE CHALLENGE AND PROVE YOUR KNOWLEDGE WITH OUR EXCITING QUIZ</u></center></h2>
+  <p><center><b>Sports unite, transcend, and create unforgettable moments.</b></center></p>
+  
+  <h1>Start Quiz</h1>
+  <div id="timer" style="display: block;"></div>
+  <div id="quiz">
+    <form id="quiz-form">
+      <!-- Questions will be dynamically generated here -->
+    </form>
+    <button class="submit-btn" onclick="nextQuestion()">Next</button>
+	<button class="submit-btn" onclick="submitQuiz()">Submit</button>
+  </div>
+  <div id="result">
+    <h2>Quiz Results</h2>
+    <p id="score"></p>
+    <p id="percentage"></p>
+    <p id="correct-answers"></p>
+	<h2>Memo<br></h2>
+    <div id="corrections" style="display: none;"></div>
+  </div>
+
+  <script>
+    // Array of questions
+    var questions = [
+	  {
+		question: "Which sport is known as the beautiful game?",
+		choices: ["Basketball", "Soccer", "Baseball", "Tennis"],
+		correctAnswer: 1
+	  },
+	  {
+		question: "In which sport does a birdie need to be hit over a net?",
+		choices: ["Badminton", "Golf", "Volleyball", "Table Tennis"],
+		correctAnswer: 0
+	  },
+	  {
+		question: "Which country won the FIFA World Cup in 2018?",
+		choices: ["Brazil", "Germany", "France", "Spain"],
+		correctAnswer: 2
+	  },
+	  {
+		question: "What is the maximum number of players allowed on a basketball court from one team?",
+		choices: ["6", "7", "8", "5"],
+		correctAnswer: 3
+	  },
+	  {
+		question: "Which city hosted the 2016 Summer Olympics?",
+		choices: ["Rio de Janeiro", "London", "Beijing", "Tokyo"],
+		correctAnswer: 0
+	  },
+	  {
+		question: "Who holds the record for the most home runs in Major League Baseball (MLB) history?",
+		choices: ["Babe Ruth", "Barry Bonds", "Hank Aaron", "Alex Rodriguez"],
+		correctAnswer: 1
+	  },
+	  {
+		question: "In which sport is the Golden Slam achieved?",
+		choices: ["Swimming", "Track and Field", "Tennis", "Gymnastics"],
+		correctAnswer: 2
+	  },
+	  {
+		question: "Which country won the most gold medals in the 2020 Tokyo Olympics?",
+		choices: ["China", "Japan", "Russia", "United States"],
+		correctAnswer: 3
+	  },
+	  {
+		question: "Which sport uses a shuttlecock?",
+		choices: ["Badminton", "Golf", "Cricket", "Rugby"],
+		correctAnswer: 0
+	  },
+	  {
+		question: "Who is considered the greatest basketball player of all time?",
+		choices: ["LeBron James", "Michael Jordan", "Kobe Bryant", "Magic Johnson"],
+		correctAnswer: 1
+	  },
+	  {
+		question: "In which sport can you find the terms love, deuce, and ace?",
+		choices: ["Golf", "Chess", "Tennis", "Volleyball"],
+		correctAnswer: 2
+	  },
+	  {
+		question: "Which country won the UEFA Euro 2020 tournament?",
+		choices: ["England", "Spain", "France", "Italy"],
+		correctAnswer: 3
+	  },
+	  {
+		question: "What is the length of a marathon race in kilometers?",
+		choices: [ "42.2", "26.2", "13.1", "10"],
+		correctAnswer: 0
+	  },
+	  {
+		question: "Which athlete has won the most Olympic gold medals?",
+		choices: ["Usain Bolt", "Michael Phelps", "Simone Biles", "Serena Williams"],
+		correctAnswer: 1
+	  },
+	  {
+		question: "Which sport is associated with the Super Bowl?",
+		choices: ["Baseball", "Ice Hockey", "American Football", "Basketball"],
+		correctAnswer: 2
+	  },
+	  {
+		question: "Who is the most successful Formula 1 driver of all time in terms of world championships won?",
+		choices: ["Lewis Hamilton", "Ayrton Senna", "Sebastian Vettel", "Michael Schumacher"],
+		correctAnswer: 3
+	  },
+	  {
+		question: "Which country won the Cricket World Cup in 2019?",
+		choices: ["England", "Australia", "India","New Zealand"],
+		correctAnswer: 0
+	  },
+	  {
+		question: "In which sport is the term slam dunk commonly used?",
+		choices: ["Soccer", "Basketball", "Golf", "Tennis"],
+		correctAnswer: 1
+	  },
+	  {
+		question: "Which country won the Copa America in 2021?",
+		choices: ["Brazil", "Uruguay", "Argentina", "Colombia"],
+		correctAnswer: 2
+	  },
+	  {
+		question: "In which sport is the term hole-in-one used?",
+		choices: ["Swimming", "Cycling", "Boxing", "Golf"],
+		correctAnswer: 3
+	  },
+	  {
+		question: "Which country won the Rugby World Cup in 2019?",
+		choices: ["New Zealand", "England", "South Africa", "Australia"],
+		correctAnswer: 2
+	  },
+	  {
+		question: "In which sport do teams compete for the Stanley Cup?",
+		choices: ["Ice Hockey", "Basketball", "Baseball", "Tennis"],
+		correctAnswer: 0
+	  },
+	  {
+		question: "Who is the all-time leading scorer in NBA history?",
+		choices: ["LeBron James", "Kareem Abdul-Jabbar", "Michael Jordan", "Kobe Bryant"],
+		correctAnswer: 1
+	  },
+	  {
+		question: "Which country has won the most Olympic gold medals in total?",
+		choices: ["United States", "China", "Russia", "Germany"],
+		correctAnswer: 0
+	  },
+	  {
+		question: "In which sport is the term knockout commonly used?",
+		choices: ["Tennis", "Swimming", "Boxing", "Gymnastics"],
+		correctAnswer: 2
+	  },
+	  {
+		question: "Which country won the Womens FIFA World Cup in 2019?",
+		choices: ["United States", "Germany", "Brazil", "Sweden"],
+		correctAnswer: 0
+	  },
+	  {
+		question: "In which sport is the Ashes series contested?",
+		choices: ["Tennis", "Rugby", "Golf", "Cricket"],
+		correctAnswer: 3
+	  },
+	  {
+		question: "Who won the Tour de France in 2020?",
+		choices: ["Tadej Pogacar", "Primoz Roglic", "Egan Bernal", "Chris Froome"],
+		correctAnswer: 0
+	  },
+	  {
+		question: "In which sport is the term grand slam used?",
+		choices: ["Football", "Tennis", "Athletics", "Swimming"],
+		correctAnswer: 1
+	  },
+	  {
+		question: "Which country won the first Cricket World Cup in 1975?",
+		choices: ["West Indies", "Australia", "England", "India"],
+		correctAnswer: 0
+	  },
+	  {
+		question: "Who is the fastest man in recorded history?",
+		choices: ["Carl Lewis", "Jesse Owens", "Usain Bolt", "Asafa Powell"],
+		correctAnswer: 2
+	  },
+	  {
+		question: "In which sport is the term try commonly used?",
+		choices: ["Rugby", "Football", "Basketball", "Cricket"],
+		correctAnswer: 0
+	  },
+	  {
+		question: "Which country won the Womens UEFA Euro 2017 tournament?",
+		choices: ["Germany", "France", "Sweden", "Netherlands"],
+		correctAnswer: 3
+	  },
+	  {
+		question: "In which sport is the term eagle commonly used?",
+		choices: ["Golf", "Soccer", "Basketball", "Tennis"],
+		correctAnswer: 0
+	  },
+	  {
+		question: "Which country won the first ever Rugby World Cup in 1987?",
+		choices: ["Australia", "New Zealand", "England", "South Africa"],
+		correctAnswer: 1
+	  },
+	  {
+		question: "In which sport is the term fast break commonly used?",
+		choices: ["Basketball", "Cricket", "Swimming", "Athletics"],
+		correctAnswer: 0
+	  },
+	  {
+		question: "Which country won the most gold medals in the 2016 Rio Olympics?",
+		choices: ["China", "Great Britain", "United States", "Russia"],
+		correctAnswer: 2
+	  },
+	  {
+		question: "In which sport is the Yellow Jersey worn?",
+		choices: ["Cycling", "Tennis", "Skiing", "Football"],
+		correctAnswer: 0
+	  },
+	  {
+		question: "Which country has won the most FIFA World Cup titles?",
+		choices: ["Germany", "Italy", "Argentina", "Brazil"],
+		correctAnswer: 3
+	  },
+	  {
+		question: "In which sport is the term puck used?",
+		choices: ["Ice Hockey", "Basketball", "Golf", "Tennis"],
+		correctAnswer: 0
+	  },
+	  {
+		question: "Who is the most decorated Olympian of all time?",
+		choices: [ "Usain Bolt", "Michael Phelps", "Simone Biles", "Larisa Latynina"],
+		correctAnswer: 1
+	  },
+	  {
+		question: "In which sport is the term six used?",
+		choices: ["Cricket", "Tennis", "Basketball", "Baseball"],
+		correctAnswer: 0
+	  },
+	  {
+		question: "Which country won the UEFA Euro 2016 tournament?",
+		choices: ["France", "Germany", "Portugal", "Spain"],
+		correctAnswer: 2
+	  },
+	  {
+		question: "In which sport is the term knockdown used?",
+		choices: ["Boxing", "Golf", "Swimming", "Tennis"],
+		correctAnswer: 0
+	  },
+	  {
+		question: "Which country won the Copa America in 2019?",
+		choices: ["Argentina", "Chile", "Colombia", "Brazil"],
+		correctAnswer: 3
+	  },
+	  {
+		question: "In which sport is the term half-pipe used?",
+		choices: ["Snowboarding", "Cycling", "Skiing", "Skateboarding"],
+		correctAnswer: 0
+	  },
+	  {
+		question: "Which country won the first ever Cricket World Cup in 1975?",
+		choices: ["Australia", "West Indies", "England", "India"],
+		correctAnswer: 1
+	  },
+	  {
+		question: "In which sport is the term alley-oop used?",
+		choices: ["Soccer", "Tennis", "Basketball",  "Volleyball"],
+		correctAnswer: 2
+	  },
+	  {
+		question: "Which country won the Rugby World Cup in 2015?",
+		choices: ["Australia", "South Africa", "England", "New Zealand"],
+		correctAnswer: 3
+	  },
+	  {
+		question: "In which sport is the term love used?",
+		choices: ["Football", "Tennis", "Golf", "Cricket"],
+		correctAnswer: 1
+	  },
+	  {
+		question: "Who won the Formula 1 World Championship in 2020?",
+		choices: ["Lewis Hamilton", "Valtteri Bottas", "Max Verstappen", "Sebastian Vettel"],
+		correctAnswer: 0
+	  },
+	  {
+		question: "In which sport is the term stumped used?",
+		choices: ["Tennis", "Baseball", "Cricket",  "Soccer"],
+		correctAnswer: 2
+	  },
+	  {
+		question: "Which country won the most gold medals in the 2008 Beijing Olympics?",
+		choices: ["United States", "Russia", "China", "Great Britain"],
+		correctAnswer: 2
+	  },
+	  {
+		question: "In which sport is the term spare used?",
+		choices: ["Bowling", "Swimming", "Cycling", "Athletics"],
+		correctAnswer: 0
+	  },
+	  {
+		question: "Who is the all-time leading scorer in international mens soccer?",
+		choices: ["Lionel Messi", "Pelé", "Miroslav Klose", "Cristiano Ronaldo"],
+		correctAnswer: 3
+	  },
+	  {
+		question: "In which sport is the term drop shot used?",
+		choices: ["Tennis", "Golf", "Cricket", "Soccer"],
+		correctAnswer: 0
+	  },
+	  {
+		question: "Which country won the most gold medals in the 2012 London Olympics?",
+		choices: ["China", "United States", "Great Britain", "Russia"],
+		correctAnswer: 1
+	  },
+	  {
+		question: "In which sport is the term hat-trick used?",
+		choices: ["Soccer", "Hockey", "Cricket", "Basketball"],
+		correctAnswer: 0
+	  },
+	  {
+		question: "Who won the NBA Finals MVP in 2021?",
+		choices: ["Giannis Antetokounmpo", "LeBron James", "Kevin Durant", "Stephen Curry"],
+		correctAnswer: 0
+	  },
+	  {
+		question: "In which sport is the term backhand used?",
+		choices: ["Baseball", "Golf", "Swimming", "Tennis"],
+		correctAnswer: 3
+	  },
+	  {
+		question: "Which country won the UEFA Euro 2020 tournament?",
+		choices: ["Italy", "England", "Spain", "France"],
+		correctAnswer: 0
+	  },
+	  {
+		question: "In which sport is the term pitcher used?",
+		choices: ["Soccer", "Baseball", "Basketball", "Tennis"],
+		correctAnswer: 1
+	  },
+	  {
+		question: "Who is the all-time leading scorer in NHL history?",
+		choices: ["Mario Lemieux", "Jaromir Jagr", "Wayne Gretzky", "Gordie Howe"],
+		correctAnswer: 2
+	  },
+	  {
+		question: "In which sport is the term sprint commonly used?",
+		choices: ["Cycling", "Swimming", "Basketball", "Track and Field"],
+		correctAnswer: 3
+	  },
+      // Add more questions here...
+    ];
+
+    var currentQuestionIndex = 0;
+    var totalQuestions = 0;
+    var correctAnswers = 0;
+    var intervalId;
+
+    // Function to generate the quiz
+    function generateQuiz() {
+      var quizForm = document.getElementById("quiz-form");
+
+      totalQuestions = 10; // Set the total number of questions to 10
+
+      // Shuffle the questions array
+      var shuffledQuestions = shuffleArray(questions);
+      var selectedQuestions = shuffledQuestions.slice(0, totalQuestions);
+
+      // Generate HTML for each question
+      selectedQuestions.forEach(function (question, index) {
+        var questionHtml = "";
+        if (index === 0) {
+          questionHtml += '<div class="question" id="question-' + index + '">';
+        } else {
+          questionHtml += '<div class="question" id="question-' + index + '" style="display: none;">';
+        }
+        var indentation = "&emsp;"; // Adjust the number of spaces to set the desired indentation level
+        questionHtml += "<b>Question " + (index + 1) + "</b> [ 1 Point ]<br>" +
+          indentation + question.question + "<br><br>";
+
+        // Generate HTML for choices
+        question.choices.forEach(function (choice, choiceIndex) {
+          questionHtml += indentation + '<label>' +
+            '<input type="radio" name="question-' + index + '" value="' + choiceIndex + '">' +
+            choice +
+            '</label><br>';
+
+          if (choiceIndex === question.choices.length - 1) {
+            questionHtml += '<br>'; // Add a line break after the last choice
+          }
+        });
+
+        questionHtml += '</div>';
+
+        quizForm.innerHTML += questionHtml;
+      });
+    }
+
+    // Function to shuffle an array
+    function shuffleArray(array) {
+      var currentIndex = array.length, temporaryValue, randomIndex;
+
+      while (0 !== currentIndex) {
+        randomIndex = Math.floor(Math.random() * currentIndex);
+        currentIndex -= 1;
+        temporaryValue = array[currentIndex];
+        array[currentIndex] = array[randomIndex];
+        array[randomIndex] = temporaryValue;
+      }
+
+      return array;
+    }
+
+    // Function to calculate the quiz score and display results
+    function submitQuiz() {
+      var quizForm = document.getElementById("quiz-form");
+      var quizElements = quizForm.elements;
+
+      var correctionsHtml = "";
+
+      for (var i = 0; i < totalQuestions; i++) {
+        var selectedAnswer = parseInt(quizElements["question-" + i].value);
+        var question = questions[i];
+
+        if (selectedAnswer === question.correctAnswer) {
+          correctAnswers++;
+        } else {
+          // Generate HTML for correction
+          correctionsHtml += "<p>Question " + (i + 1) + ": "+ question.question + " <br>";
+          correctionsHtml += "Your Answer: " + question.choices[selectedAnswer] + "<br>";
+          correctionsHtml += "Correct Answer: " + question.choices[question.correctAnswer] + "</p>";
+        }
+      }
+
+      var score = "Score: " + correctAnswers + "/" + totalQuestions;
+      var percentage = "Percentage: " + ((correctAnswers / totalQuestions) * 100).toFixed(2) + "%";
+      var correctAnswerText = "Correct Answers: " + correctAnswers;
+
+      document.getElementById("score").textContent = score;
+      document.getElementById("percentage").textContent = percentage;
+      document.getElementById("correct-answers").textContent = correctAnswerText;
+
+      document.getElementById("quiz").style.display = "none";
+      document.getElementById("result").style.display = "block";
+
+      // Display corrections
+      var correctionsContainer = document.getElementById("corrections");
+      correctionsContainer.innerHTML = correctionsHtml;
+      correctionsContainer.style.display = "block";
+
+      // Hide the timer
+      document.getElementById("timer").style.display = "none";
+
+      clearInterval(intervalId);
+    }
+
+    // Function to show next question
+    function nextQuestion() {
+      var currentQuestion = document.getElementById("question-" + currentQuestionIndex);
+      currentQuestion.style.display = "none";
+
+      currentQuestionIndex++;
+      if (currentQuestionIndex >= totalQuestions) {
+        submitQuiz();
+      } else {
+        var nextQuestion = document.getElementById("question-" + currentQuestionIndex);
+        nextQuestion.style.display = "block";
+      }
+    }
+
+    // Timer function
+    function startTimer(duration, display) {
+      var timer = duration, minutes, seconds;
+      intervalId = setInterval(function () {
+        minutes = parseInt(timer / 60, 10);
+        seconds = parseInt(timer % 60, 10);
+
+        minutes = minutes < 10 ? "0" + minutes : minutes;
+        seconds = seconds < 10 ? "0" + seconds : seconds;
+
+        display.textContent = "Time Remaining: " + minutes + ":" + seconds;
+
+        if (--timer < 0) {
+          clearInterval(intervalId);
+          submitQuiz();
+        }
+      }, 1000);
+    }
+
+    // Generate the quiz on page load
+    window.onload = function () {
+      generateQuiz();
+
+      // Timer duration in seconds
+      var timerDuration = 600; // Adjust the timer duration as desired
+
+      var timerDisplay = document.getElementById("timer");
+      startTimer(timerDuration, timerDisplay);
+    };
+  </script>
+</body>
+</html>

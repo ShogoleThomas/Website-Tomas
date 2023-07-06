@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Quiz</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+    }
+    h1 {
+      text-align: center;
+    }
+    #quiz {
+      margin-bottom: 20px;
+    }
+    #result {
+      display: none;
+    }
+    .question {
+      margin-bottom: 10px;
+    }
+    .submit-btn {
+      display: block;
+      margin-top: 20px;
+    }
+    .center {
+      display: flex;
+      justify-content: center;
+    }
+    .button-container {
+      margin: 10px;
+    }
+    #timer {
+      text-align: center;
+      font-size: 24px;
+      margin-bottom: 20px;
+    }
+  </style>
+</head>
+<body bgcolor="#ahahah">
+  <h1><u>WANNA KNOW MORE ABOUT TECH?</u></h1>
+  <h2><center><u>ANSWER THE QUIZ BELOW TO FIND OUT!</u></center></h2>
+  <p><center><b>What comes to your mind when you think about Technology?</b></center></p>
+  
+  <h1>Start Quiz</h1>
+  <div id="timer" style="display: block;"></div>
+  <div id="quiz">
+    <form id="quiz-form">
+      <!-- Questions will be dynamically generated here -->
+    </form>
+    <button class="submit-btn" onclick="nextQuestion()">Next</button>
+	<button class="submit-btn" onclick="submitQuiz()">Submit</button>
+  </div>
+  <div id="result">
+    <h2>Quiz Results</h2>
+    <p id="score"></p>
+    <p id="percentage"></p>
+    <p id="correct-answers"></p>
+	<h2>Memo<br></h2>
+    <div id="corrections" style="display: none;"></div>
+  </div>
+
+  <script>
+    // Array of questions
+    var questions = [
+      {
+              question: "What does CPU stand for?",
+              choices: ["Computer Processing Unit", "Control Processing Unit", "Central Processing Unit", "Central Power Unit"],
+              correctAnswer: 2
+            },
+			{
+              question: "Which of the following is an input device?",
+              choices: ["Monitor", "Keyboard", "Printer", "Speaker"],
+              correctAnswer: 1
+            },
+			{
+              question: "What does RAM stand for?",
+              choices: ["Remote Access Module", "Real-Time Active Memory", "Read-Only Memory", "Random Access Memory"],
+              correctAnswer: 3
+            },
+			{
+              question: "Which programming language is used to develop Android applications?",
+              choices: ["Python", "C++", "Java", "JavaScript"],
+              correctAnswer: 2
+            },
+			{
+              question: "What does HTML stand for?",
+              choices: ["HyperText Markup Language", "Hyperlink and Text Markup Language", "High-Level Markup Language", "Hypertext and Multimedia Language"],
+              correctAnswer: 0
+            },
+			{
+              question: "Which of the following is an example of cloud storage service?",
+              choices: ["Windows Explorer", "Google Drive", "Microsoft Word", "Adobe Photoshop"],
+              correctAnswer: 1
+            },
+			{
+              question: "What is the function of an operating system?",
+              choices: ["Create graphical user interfaces", "Write code for software applications", "Manage computer hardware resources", "Connect to the internet"],
+              correctAnswer: 2
+            },
+			{
+              question: "Which of the following is an input device?",
+              choices: ["Monitor", "Keyboard", "Printer", "Speaker"],
+              correctAnswer: 1
+            },
+			{
+              question: "What does URL stand for?",
+              choices: ["Uniform Resource Locator", "Universal Routing Language", "User Registration Link", "Unified Resource Listing"],
+              correctAnswer: 0
+            },
+			{
+              question: "Which of the following is a type of computer virus?",
+              choices: ["Firewall", "Router", "Trojan horse", "Modem"],
+              correctAnswer: 2
+            },
+			{
+              question: "What is the purpose of a firewall?",
+              choices: ["To store and manage data files", "To connect multiple devices together", "To increase computer processing speed", "To prevent unauthorized access to a network"],
+              correctAnswer: 3
+            },
+			{
+              question: "Which of the following is an example of a web browser?",
+              choices: ["Google", "Facebook", "Twitter", "Mozilla Firefox"],
+              correctAnswer: 3
+            },
+			{
+              question: "What is the function of an antivirus software?",
+              choices: ["To create and edit documents", "To connect to the internet", "To protect against malware and viruses", "To play multimedia files"],
+              correctAnswer: 2
+            },
+			{
+              question: "What does VPN stand for?",
+              choices: ["Virus Protection Network", "Virtual Programming Node", "Voice and Phone Network", "Virtual Private Network"],
+              correctAnswer: 3
+            },
+			{
+              question: "Which of the following is a social media platform?",
+              choices: ["Microsoft Excel", "Adobe Photoshop", "Instagram", "Google Docs"],
+              correctAnswer: 2
+            },
+			{
+              question: "What does IoT stand for?",
+              choices: ["Information of Technology", "Internet of Things", "Input and Output Terminal", "Integrated Operating Toolkit"],
+              correctAnswer: 1
+            },
+			{
+              question: "Which technology is used for wireless communication between devices?",
+              choices: ["Ethernet", "Bluetooth", "HDMI", "USB"],
+              correctAnswer: 1
+            },
+			{
+              question: "What is the main purpose of a spreadsheet software?",
+              choices: ["To create and manage databases", "To design websites", "To perform calculations and data analysis", "To edit and compose documents"],
+              correctAnswer: 2
+            },
+			{
+              question: "What does SSD stand for?",
+              choices: ["Serial Software Development", "System Security Device", "Solid State Drive", "Secure Server Directory"],
+              correctAnswer: 2
+            },
+			{
+              question: "Which of the following is a programming language?",
+              choices: ["Microsoft Word", "C++", "Windows Explorer", "Adobe Photoshop"],
+              correctAnswer: 1
+            },
+			{
+              question: "What is the purpose of a router in a computer network?",
+              choices: ["To display visual output on a monitor", "To provide power to the computer system", "To display visual output on a monitor", "To connect multiple devices and manage network traffic"],
+              correctAnswer: 3
+            },
+			{
+              question: "Which of the following is an example of a wearable device?",
+              choices: ["Scanner", "Printer", "Smartwatch", "Projector"],
+              correctAnswer: 2
+            },
+			{
+              question: "What is the function of a graphics card in a computer?",
+              choices: ["To render and display graphics on a monitor", "To store and manage data files", "To connect to the internet", "To protect against viruses and malware"],
+              correctAnswer: 0
+            },
+			{
+              question: "What does SSL stand for?",
+              choices: ["Simple System Language", "Secure Socket Layer", "System Security License", "Serial Storage Library"],
+              correctAnswer: 1
+            },
+			{
+              question: "Which of the following is an example of a video conferencing application?",
+              choices: ["Microsoft Excel", "Adobe Photoshop", "Zoom", "Google Docs"],
+              correctAnswer: 2
+            },
+			{
+              question: "What is the purpose of an email client?",
+              choices: ["To edit and compose documents", "To connect to the internet", "To send, receive, and manage email messages", "To play multimedia files"],
+              correctAnswer: 2
+            },
+			{
+              question: "What does USB stand for?",
+              choices: ["User Software Backup", "Universal Serial Bus", "Unified System Board", "Ultra-Slim Battery"],
+              correctAnswer: 1
+            },
+			{
+              question: "Which of the following is an example of a cloud-based productivity suite?",
+              choices: ["Apple iTunes", "Microsoft Office 365", "Adobe Photoshop", "Windows Media Player"],
+              correctAnswer: 1
+            },
+			{
+              question: "What is the function of an HDMI cable?",
+              choices: ["To transmit audio and video signals between devices", "To provide internet connectivity", "To create and edit documents", "To protect against viruses and malware"],
+              correctAnswer: 0
+            },
+			{
+              question: "What does DNS stand for?",
+              choices: ["Digital Network Server", "Domain Name System", "Data Naming Service", "Dynamic Network Security"],
+              correctAnswer: 1
+            },
+			{
+              question: "Which of the following is an example of an e-commerce website?",
+              choices: ["Microsoft Word", "Adobe Photoshop", "Amazon", "Google Maps"],
+              correctAnswer: 2
+            },
+			{
+              question: "What is the purpose of a barcode scanner?",
+              choices: ["To create and edit graphics", "To connect to the internet", "To play multimedia files", "To read and input barcode information into a computer system"],
+              correctAnswer: 3
+            },
+			{
+              question: "What does AI stand for?",
+              choices: ["Advanced Interface", "Application Integration", "Artificial Intelligence", "Accessible Information"],
+              correctAnswer: 2
+            },
+			{
+              question: "Which technology allows wireless communication over short distances?",
+              choices: ["Ethernet", "Wi-Fi", "HDMI", "USB"],
+              correctAnswer: 1
+            },
+			{
+              question: "What is the function of a modem?",
+              choices: ["To store and manage data files", "To display visual output on a monitor", "To connect a computer to the internet", "To protect against viruses and malware"],
+              correctAnswer: 2
+            },
+			{
+              question: "Which of the following is an example of a virtual assistant?",
+              choices: ["Google Docs", "Adobe Photoshop", "Siri", "Microsoft Excel"],
+              correctAnswer: 2
+            },
+			{
+              question: "What is the purpose of an SSD in a computer system?",
+              choices: ["To provide power to the computer system", "To store and retrieve data files", "To display visual output on a monitor", "To connect to the internet"],
+              correctAnswer: 1
+            },
+			{
+              question: "What does VoIP stand for?",
+              choices: ["Video Output Interface", "Virtual Office Integration Platform", "Voice over Internet Protocol", "Visual Object Identification Process"],
+              correctAnswer: 2
+            },
+			{
+              question: "Which of the following is an example of a database management system?",
+              choices: ["Windows Media Player", "Microsoft Word", "MySQL", "Adobe Photoshop"],
+              correctAnswer: 2
+            },
+			{
+              question: "What is the purpose of an optical disc drive?",
+              choices: ["To play multimedia files", "To create and edit documents", "To connect to the internet", "To read and write data to optical discs"],
+              correctAnswer: 3
+            },
+			{
+              question: "What does LAN stand for?",
+              choices: ["Large Access Network", "Local Area Network", "Longitudinal Action Node", "Low Audio Noise"],
+              correctAnswer: 1
+            },
+			{
+              question: "Which of the following is an example of a computer programming IDE?",
+              choices: ["Google Docs", "Adobe Photoshop", "Visual Studio", "Microsoft Excel"],
+              correctAnswer: 2
+            },
+			{
+              question: "What is the purpose of a UPS (Uninterruptible Power Supply)?",
+              choices: ["To increase computer processing speed", "To provide backup power in case of electricity failure", "To store and manage data files", "To protect against viruses and malware"],
+              correctAnswer: 1
+            },
+			{
+              question: "Which of the following is an example of a computer programming language?",
+              choices: ["Microsoft Word", "Adobe Photoshop", "Python", "Windows Explorer"],
+              correctAnswer: 2
+            },
+			{
+              question: "What is the purpose of a sound card in a computer?",
+              choices: ["To store and manage data files", "To process and output audio signals", "To connect to the internet", "To display visual output on a monitor"],
+              correctAnswer: 1
+            },
+			{
+              question: "What does CMS stand for?",
+              choices: ["Computer Memory Storage", "Content Management System", "Centralized Monitoring Service", "Customer Management Solution"],
+              correctAnswer: 1
+            },
+			{
+              question: "Which of the following is an example of a cybersecurity measure?",
+              choices: ["Apple iTunes", "Microsoft Excel", "Windows Media Player", "Firewall"],
+              correctAnswer: 3
+            },
+			{
+              question: "What is the purpose of an infrared port on a device?",
+              choices: ["To create and edit documents", "To provide power to the device", "To transmit data wirelessly between devices", "To protect against viruses and malware"],
+              correctAnswer: 2
+            },
+			{
+              question: "What does HTML5 stand for?",
+              choices: ["HyperText Markup Language version 5", "Hyperspace and Technology Module 5", "High-Level Multimedia Toolkit 5", "Hybrid Telecommunications Management 5"],
+              correctAnswer: 0
+            },
+			{
+			  question: "True or False: RAM stands for Random Access Memory.",
+			  choices: ["True", "False"],
+			  correctAnswer: 0
+			},
+			{
+			  question: "True or False: The CPU is responsible for executing instructions and performing calculations in a computer.",
+			  choices: ["True", "False"],
+			  correctAnswer: 0
+			},
+			{
+			  question: "True or False: USB stands for Universal Serial Bus.",
+			  choices: ["True", "False"],
+			  correctAnswer: 0
+			},
+			{
+			  question: "True or False: A solid-state drive (SSD) uses mechanical parts to store data.",
+			  choices: ["True", "False"],
+			  correctAnswer: 1
+			},
+			{
+			  question: "True or False: HTML is a programming language used to create and structure web pages.",
+			  choices: ["True", "False"],
+			  correctAnswer: 0
+			},
+			{
+			  question: "True or False: Wi-Fi is a wireless networking technology that allows devices to connect to the internet.",
+			  choices: ["True", "False"],
+			  correctAnswer: 0
+			},
+			{
+			  question: "True or False: GPS technology uses satellites to provide location information.",
+			  choices: ["True", "False"],
+			  correctAnswer: 0
+			},
+			{
+			  question: "True or False: Bluetooth technology is used for short-range wireless communication between devices.",
+			  choices: ["True", "False"],
+			  correctAnswer: 0
+			},
+			{
+			  question: "True or False: Virtual reality (VR) allows users to experience a computer-generated environment and interact with it.",
+			  choices: ["True", "False"],
+			  correctAnswer: 0
+			},
+			{
+			  question: "True or False: The term 'phishing' refers to a cyber attack aimed at stealing sensitive information by pretending to be a trustworthy entity.",
+			  choices: ["True", "False"],
+			  correctAnswer: 0
+			},
+			{
+			  question: "True or False: HTML files can be opened and edited using a text editor.",
+			  choices: ["True", "False"],
+			  correctAnswer: 0
+			},
+			{
+			  question: "True or False: A firewall is a security device that helps protect a computer network from unauthorized access.",
+			  choices: ["True", "False"],
+			  correctAnswer: 0
+			},
+			{
+			  question: "True or False: The operating system is responsible for managing and controlling computer hardware and software resources.",
+			  choices: ["True", "False"],
+			  correctAnswer: 0
+			},
+			{
+			  question: "True or False: Ctrl+Alt+Delete is a keyboard shortcut used to restart a computer.",
+			  choices: ["True", "False"],
+			  correctAnswer: 0
+			},
+			{
+			  question: "True or False: An IP address uniquely identifies a device connected to a network.",
+			  choices: ["True", "False"],
+			  correctAnswer: 0
+			}
+
+      // Add more questions here...
+    ];
+
+    var currentQuestionIndex = 0;
+    var totalQuestions = 0;
+    var correctAnswers = 0;
+    var intervalId;
+
+    // Function to generate the quiz
+    function generateQuiz() {
+      var quizForm = document.getElementById("quiz-form");
+
+      totalQuestions = 10; // Set the total number of questions to 10
+
+      // Shuffle the questions array
+      var shuffledQuestions = shuffleArray(questions);
+      var selectedQuestions = shuffledQuestions.slice(0, totalQuestions);
+
+      // Generate HTML for each question
+      selectedQuestions.forEach(function (question, index) {
+        var questionHtml = "";
+        if (index === 0) {
+          questionHtml += '<div class="question" id="question-' + index + '">';
+        } else {
+          questionHtml += '<div class="question" id="question-' + index + '" style="display: none;">';
+        }
+        var indentation = "&emsp;"; // Adjust the number of spaces to set the desired indentation level
+        questionHtml += "<b>Question " + (index + 1) + "</b> [ 1 Point ]<br>" +
+          indentation + question.question + "<br><br>";
+
+        // Generate HTML for choices
+        question.choices.forEach(function (choice, choiceIndex) {
+          questionHtml += indentation + '<label>' +
+            '<input type="radio" name="question-' + index + '" value="' + choiceIndex + '">' +
+            choice +
+            '</label><br>';
+
+          if (choiceIndex === question.choices.length - 1) {
+            questionHtml += '<br>'; // Add a line break after the last choice
+          }
+        });
+
+        questionHtml += '</div>';
+
+        quizForm.innerHTML += questionHtml;
+      });
+    }
+
+    // Function to shuffle an array
+    function shuffleArray(array) {
+      var currentIndex = array.length, temporaryValue, randomIndex;
+
+      while (0 !== currentIndex) {
+        randomIndex = Math.floor(Math.random() * currentIndex);
+        currentIndex -= 1;
+        temporaryValue = array[currentIndex];
+        array[currentIndex] = array[randomIndex];
+        array[randomIndex] = temporaryValue;
+      }
+
+      return array;
+    }
+
+    // Function to calculate the quiz score and display results
+    function submitQuiz() {
+      var quizForm = document.getElementById("quiz-form");
+      var quizElements = quizForm.elements;
+
+      var correctionsHtml = "";
+
+      for (var i = 0; i < totalQuestions; i++) {
+        var selectedAnswer = parseInt(quizElements["question-" + i].value);
+        var question = questions[i];
+
+        if (selectedAnswer === question.correctAnswer) {
+          correctAnswers++;
+        } else {
+          // Generate HTML for correction
+          correctionsHtml += "<p>Question " + (i + 1) + ": "+ question.question + " <br>";
+          correctionsHtml += "Your Answer: " + question.choices[selectedAnswer] + "<br>";
+          correctionsHtml += "Correct Answer: " + question.choices[question.correctAnswer] + "</p>";
+        }
+      }
+
+      var score = "Score: " + correctAnswers + "/" + totalQuestions;
+      var percentage = "Percentage: " + ((correctAnswers / totalQuestions) * 100).toFixed(2) + "%";
+      var correctAnswerText = "Correct Answers: " + correctAnswers;
+
+      document.getElementById("score").textContent = score;
+      document.getElementById("percentage").textContent = percentage;
+      document.getElementById("correct-answers").textContent = correctAnswerText;
+
+      document.getElementById("quiz").style.display = "none";
+      document.getElementById("result").style.display = "block";
+
+      // Display corrections
+      var correctionsContainer = document.getElementById("corrections");
+      correctionsContainer.innerHTML = correctionsHtml;
+      correctionsContainer.style.display = "block";
+
+      // Hide the timer
+      document.getElementById("timer").style.display = "none";
+
+      clearInterval(intervalId);
+    }
+
+    // Function to show next question
+    function nextQuestion() {
+      var currentQuestion = document.getElementById("question-" + currentQuestionIndex);
+      currentQuestion.style.display = "none";
+
+      currentQuestionIndex++;
+      if (currentQuestionIndex >= totalQuestions) {
+        submitQuiz();
+      } else {
+        var nextQuestion = document.getElementById("question-" + currentQuestionIndex);
+        nextQuestion.style.display = "block";
+      }
+    }
+
+    // Timer function
+    function startTimer(duration, display) {
+      var timer = duration, minutes, seconds;
+      intervalId = setInterval(function () {
+        minutes = parseInt(timer / 60, 10);
+        seconds = parseInt(timer % 60, 10);
+
+        minutes = minutes < 10 ? "0" + minutes : minutes;
+        seconds = seconds < 10 ? "0" + seconds : seconds;
+
+        display.textContent = "Time Remaining: " + minutes + ":" + seconds;
+
+        if (--timer < 0) {
+          clearInterval(intervalId);
+          submitQuiz();
+        }
+      }, 1000);
+    }
+
+    // Generate the quiz on page load
+    window.onload = function () {
+      generateQuiz();
+
+      // Timer duration in seconds
+      var timerDuration = 600; // Adjust the timer duration as desired
+
+      var timerDisplay = document.getElementById("timer");
+      startTimer(timerDuration, timerDisplay);
+    };
+  </script>
+</body>
+</html>
